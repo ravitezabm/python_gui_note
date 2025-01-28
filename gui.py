@@ -8,11 +8,14 @@ add_button = sg.Button("Add")
 list_box = sg.Listbox(values=functions.get_file(),key='todos',
                       enable_events=True,size=[45,20])
 edit_button = sg.Button('Edit')
+complete_button = sg.Button('Complete')
+exit_button = sg.Button('Exit')
 
 
 window = sg.Window('Daily Notes',
                    layout=[[label],[input_box,add_button],
-                           [list_box,edit_button]],
+                           [list_box,edit_button,complete_button],
+                           [exit_button]],
                    font=('Helvetica',14))
 
 while True:
@@ -36,6 +39,17 @@ while True:
             window['todos'].update(todos)
         case 'todos':
             window['todo'].update(value=values['todos'][0])
+
+        case 'Complete':
+            todo_to_complete = values['todos'][0]
+            todos = functions.get_file()
+            todos.remove(todo_to_complete)
+            functions.write_file(todos)
+            window['todos'].update(todos)
+            window['todo'].update('')
+
+        case 'Exit':
+            break
 
         case sg.WIN_CLOSED:
             break
