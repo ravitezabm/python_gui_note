@@ -2,8 +2,6 @@ import FreeSimpleGUI as sg
 import functions
 
 
-
-
 label = sg.Text("My to-do")
 input_box = sg.InputText(tooltip="Enter To-do",key='todo')
 add_button = sg.Button("Add")
