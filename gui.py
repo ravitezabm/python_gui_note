@@ -2,6 +2,8 @@ import FreeSimpleGUI as sg
 import functions
 
 
+
+
 label = sg.Text("My to-do")
 input_box = sg.InputText(tooltip="Enter To-do",key='todo')
 add_button = sg.Button("Add")
@@ -20,8 +22,9 @@ window = sg.Window('Daily Notes',
 
 while True:
     event,values = window.read()
-    print(event)
-    print(values)
+
+    # print(event)
+    # print(values)
     match event:
         case 'Add':
             todos = functions.get_file()
@@ -30,23 +33,29 @@ while True:
             functions.write_file(todos)
             window['todos'].update(todos)
         case 'Edit':
-            todo_to_edit = values['todos'][0]
-            new_todo = values['todo']
-            todos = functions.get_file()
-            index = todos.index(todo_to_edit)
-            todos[index] = new_todo
-            functions.write_file(todos)
-            window['todos'].update(todos)
+            try :
+                todo_to_edit = values['todos'][0]
+                new_todo = values['todo']
+                todos = functions.get_file()
+                index = todos.index(todo_to_edit)
+                todos[index] = new_todo
+                functions.write_file(todos)
+                window['todos'].update(todos)
+            except IndexError:
+                sg.popup("please select an item first",font=('Helvetica',14))
         case 'todos':
             window['todo'].update(value=values['todos'][0])
 
         case 'Complete':
-            todo_to_complete = values['todos'][0]
-            todos = functions.get_file()
-            todos.remove(todo_to_complete)
-            functions.write_file(todos)
-            window['todos'].update(todos)
-            window['todo'].update('')
+            try :
+                todo_to_complete = values['todos'][0]
+                todos = functions.get_file()
+                todos.remove(todo_to_complete)
+                functions.write_file(todos)
+                window['todos'].update(todos)
+                window['todo'].update('')
+            except IndexError:
+                sg.popup("Please select an item",font=('Helvetica',14))
 
         case 'Exit':
             break
